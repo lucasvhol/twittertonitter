@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Twitter to Nitter Redirect
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.4
 // @description  Automatically redirects from Twitter to Nitter.
-// @author       https://github.com/lucasvhol
+// @author       You
 // @match        *://twitter.com/*
 // @grant        none
 // ==/UserScript==
@@ -11,30 +11,41 @@
 (function() {
     'use strict';
 
-    // Function to extract the username from a Twitter URL
-    function getTwitterUsername(url) {
-        var match = url.match(/twitter\.com\/([^\/]+)/);
-        return match ? match[1] : null;
+    // Function to extract username and tweet ID from a Twitter URL
+    function getTwitterInfo(url) {
+        var match = url.match(/twitter\.com\/([^\/]+)\/status\/(\d+)/);
+        return match ? { username: match[1], tweetID: match[2] } : null;
     }
 
     // Function to redirect to Nitter based on the Twitter URL
     function redirectTwitterToNitter() {
         var url = window.location.href;
-        var username = getTwitterUsername(url);
-
-        // If it's a profile URL
-        if (username) {
-            var newURL = 'https://nitter.net/' + username;
-            window.location.href = newURL;
-        }
+        var tweetInfo = getTwitterInfo(url);
 
         // If it's a tweet URL
-        else if (url.includes('/status/')) {
-            var newURL = 'https://nitter.net' + url.split('twitter.com')[1];
-            window.location.href = newURL;
+        if (tweetInfo) {
+            var newURL = 'https://nitter.net/' + tweetInfo.username + '/status/' + tweetInfo.tweetID;
+            window.location.replace(newURL);
+            return;
         }
+
+        // If it's the base URL "https://twitter.com/"
+        if (url === 'https://twitter.com/') {
+            window.location.href = 'https://nitter.net/';
+            return;
+        }
+
+        // If it's a profile URL
+        var username = url.match(/twitter\.com\/([^\/?]+)/);
+        if (username) {
+            var newURL = 'https://nitter.net/' + username[1];
+            window.location.replace(newURL);
+            return;
+        }
+
+        // Add more cases as needed for other types of Twitter URLs
     }
 
-    // Execute the redirection function when the page is loaded
+    // Execute the redirection function when the DOM is loaded
     redirectTwitterToNitter();
 })();
