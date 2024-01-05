@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.4
 // @description  Automatically redirects from Twitter to Nitter.
-// @author       You
+// @author       http://github.com/lucasvhol
 // @match        *://twitter.com/*
 // @grant        none
 // ==/UserScript==
@@ -42,8 +42,6 @@
             window.location.replace(newURL);
             return;
         }
-
-        // Add more cases as needed for other types of Twitter URLs
     }
 
     // Execute the redirection function when the DOM is loaded
