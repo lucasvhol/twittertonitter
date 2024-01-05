@@ -5,8 +5,9 @@ This UserScript automatically redirects Twitter URLs to Nitter, a privacy-friend
 
 ## Installation
 1. Install a user script manager for your browser. Popular choices include:
-   - Violentmonkey: [Violentmonkey](https://violentmonkey.github.io/)
-   - Tampermonkey: [Tampermonkey](https://www.tampermonkey.net/) 
+  [Violentmonkey](https://violentmonkey.github.io/)
+  [Tampermonkey](https://www.tampermonkey.net/) 
+
 2. Click [here](https://raw.githubusercontent.com/lucasvhol/twittertonitter/main/redirect.js) to install the script.
 
 ## Usage
